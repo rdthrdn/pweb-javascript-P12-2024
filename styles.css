@@ -1,1 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    padding: 0 1rem; /* Kurangi padding di kanan dan kiri */
+}
+
+@keyframes addToCartAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.add-to-cart-animation {
+    animation: addToCartAnimation 0.3s ease-in-out;
+}
+
+.cart-item-enter {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.cart-item-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Tambahkan gaya untuk tombol checkout jika diperlukan */
+#checkout-button {
+    margin-top: 10px;
+}
+
+.container {
+    max-width: 1000px; /* Sesuaikan lebar maksimum container */
+    margin: 0 auto; /* Pusatkan container */
+}
+
+header {
+    padding: 0 1rem; /* Atur padding untuk menempatkan header di pojok */
+    margin: 0; /* Pastikan margin diatur ke 0 */
+}
+
+/* Tambahkan gaya untuk tombol checkout jika diperlukan */
+#checkout-button {
+    margin-top: 10px;
+}
 
