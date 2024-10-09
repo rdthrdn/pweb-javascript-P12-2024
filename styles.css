@@ -150,12 +150,13 @@ footer {
     margin-top: 2rem;
 }
 
+/* Memperbesar tampilan cart overlay */
 #cart-overlay {
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
-    width: 300px;
+    width: 400px; /* Mengubah lebar menjadi 400px */
     background-color: #fff;
     box-shadow: -2px 0 5px rgba(0,0,0,0.1);
     z-index: 2000;
@@ -191,6 +192,21 @@ footer {
     margin-bottom: 1rem;
 }
 
+/* Gaya untuk tombol Remove dan + - */
+.cart-item button {
+    background-color: #333; /* Warna latar belakang tombol */
+    color: #fff; /* Warna teks tombol */
+    border: none; /* Menghapus border */
+    border-radius: 5px; /* Menambahkan sudut melengkung */
+    padding: 0.5rem; /* Menambahkan padding */
+    cursor: pointer; /* Mengubah kursor saat hover */
+    margin-left: 0.5rem; /* Menambahkan jarak antara tombol */
+}
+
+.cart-item button:hover {
+    background-color: #555; /* Mengubah warna latar belakang saat hover */
+}
+
 #checkout-button {
     display: block;
     width: 100%;
@@ -203,7 +219,8 @@ footer {
 }
 
 #welcome-section h2, #products-section h2 {
-    font-size: 2rem; /* Membuat tulisan lebih besar */
+    font-size: 1.5rem; /* Mengubah ukuran tulisan menjadi lebih kecil */
+    margin-bottom: 1rem; /* Menjaga jarak bawah */
 }
 
 .product-card h3 {
@@ -246,4 +263,10 @@ button:hover {
 
 .product-card:hover {
     transform: scale(1.05); /* Membesarkan kartu produk sedikit saat hover */
+}
+
+.welcome-paragraph {
+    text-align: center; /* Mengatur teks menjadi rata tengah */
+    margin: 0 20px; /* Menambahkan jarak di kanan dan kiri */
+    padding: 0 10px; /* Menambahkan padding untuk ruang tambahan */
 }

@@ -7,10 +7,20 @@ const categories = ['all', 'electronics', 'clothing', 'accessories', 'furniture'
 // Fetch products from API
 async function fetchProducts() {
     try {
-        const response = await fetch('https://dummyjson.com/products?limit=300');
+        const sortBy = document.getElementById('sort-filter').value;
+        const order = document.getElementById('sort-order').value;
+        const categoryFilter = document.getElementById('category-filter').value;
+
+        // Fetch products with sorting and filtering
+        const response = await fetch(`https://dummyjson.com/products?sortBy=${sortBy}&order=${order}&limit=300`);
         const data = await response.json();
         products = data.products;
-        displayProducts();
+
+        // Filter products by category
+        const filteredProducts = categoryFilter === 'all' ? products : products.filter(product => product.category === categoryFilter);
+
+        // Update display with filtered products
+        displayProducts(filteredProducts);
     } catch (error) {
         console.error('Error fetching products:', error);
         document.getElementById('products-grid').innerHTML = '<p>Error loading products. Please try again later.</p>';
@@ -34,29 +44,23 @@ fetch('https://dummyjson.com/products/category-list')
     });
 
 // Display products
-function displayProducts() {
+function displayProducts(filteredProducts) {
     const productsGrid = document.getElementById('products-grid');
     productsGrid.innerHTML = '';
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
-    const categoryFilter = document.getElementById('category-filter').value;
-
-    // Filter products by category
-    const filteredProducts = categoryFilter === 'all' ? products : products.filter(product => product.category === categoryFilter);
-    
-    console.log('Selected Category:', categoryFilter);
-    console.log('Filtered Products:', filteredProducts);
 
     const productsToDisplay = filteredProducts.slice(start, end);
 
     productsToDisplay.forEach(product => {
-        const priceInRupiah = Math.floor(Math.random() * (100000 - 20000 + 1)) + 20000; // Rentang 20.000 - 100.000
+        // Gunakan harga dari produk yang diambil dari API
+        const priceInDollar = product.price; // Asumsikan API mengembalikan harga dalam dolar
         const productElement = document.createElement('div');
         productElement.className = 'product-card';
         productElement.innerHTML = `
             <img src="${product.thumbnail}" alt="${product.title}">
             <h3>${product.title}</h3>
-            <p>Rp ${priceInRupiah.toLocaleString()}</p> <!-- Mengubah format harga -->
+            <p>$ ${priceInDollar.toLocaleString()}</p> <!-- Menggunakan harga dari produk -->
             <button onclick="addToCart(${product.id})">Add to Cart</button>
         `;
         productsGrid.appendChild(productElement);
@@ -96,7 +100,7 @@ function updateCart() {
         cartItem.className = 'cart-item';
         cartItem.innerHTML = `
             <span>${item.title} (${item.quantity})</span>
-            <span>Rp ${(item.price * item.quantity).toLocaleString()}</span>
+            <span>$ ${(item.price * item.quantity).toLocaleString()}</span> <!-- Menggunakan harga dari produk -->
             <button onclick="removeFromCart(${item.id})">Remove</button>
             <button onclick="updateQuantity(${item.id}, 1)">+</button>
             <button onclick="updateQuantity(${item.id}, -1)">-</button>
@@ -143,7 +147,7 @@ document.getElementById('next-page').addEventListener('click', () => {
 // Filter by category
 document.getElementById('category-filter').addEventListener('change', () => {
     currentPage = 1; // Reset to first page when category changes
-    displayProducts();
+    fetchProducts(); // Fetch products with new category
 });
 
 // Change number of items per page
@@ -204,3 +208,14 @@ function fetchCategories() {
 
 // Call init on page load
 init();
+
+// Event Listener for Sort
+document.getElementById('sort-filter').addEventListener('change', () => {
+    currentPage = 1; // Reset to first page when sort changes
+    fetchProducts(); // Fetch products with new sort
+});
+
+document.getElementById('sort-order').addEventListener('change', () => {
+    currentPage = 1; // Reset to first page when sort order changes
+    fetchProducts(); // Fetch products with new sort order
+});

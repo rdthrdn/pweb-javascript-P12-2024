@@ -24,7 +24,7 @@
     <main>
         <section id="welcome-section" class="container">
             <h2>Welcome to Tokomedia</h2>
-            <p>Welcome to our store, where we offer a fresh take on daily essentials with unbeatable prices and edgy styles! Whether you're stocking up on everyday necessities or looking for something that stands out, we've got you covered. Our products are not only affordable but also designed to match your unique sense of style, making sure you never have to compromise between function and fashion. Come shop with us and discover the perfect blend of practicality and trendsetting flair!</p>
+            <p class="welcome-paragraph">Welcome to our store, where we offer a fresh take on daily essentials with unbeatable prices and edgy styles! Whether you're stocking up on everyday necessities or looking for something that stands out, we've got you covered. Our products are not only affordable but also designed to match your unique sense of style, making sure you never have to compromise between function and fashion. Come shop with us and discover the perfect blend of practicality and trendsetting flair!</p>
         </section>
 
         <section id="products-section" class="container">
@@ -45,6 +45,15 @@
                     <option value="20">20</option>
                     <option value="40">40</option>
                     <option value="60">60</option>
+                </select>
+                <label for="sort-filter">Sort by:</label>
+                <select id="sort-filter">
+                    <option value="title">Title</option>
+                    <option value="price">Price</option>
+                </select>
+                <select id="sort-order">
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
                 </select>
             </div>
             <div id="products-grid"></div>
