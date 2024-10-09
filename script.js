@@ -2,12 +2,12 @@ let products = [];
 let cart = [];
 let currentPage = 1;
 let itemsPerPage = 20; // Default items per page
-const categories = ['all', 'electronics', 'clothing', 'accessories'];
+const categories = ['all', 'electronics', 'clothing', 'accessories', 'furniture', 'toys']; // Kategori yang sesuai
 
 // Fetch products from API
 async function fetchProducts() {
     try {
-        const response = await fetch('https://dummyjson.com/products?limit=100');
+        const response = await fetch('https://dummyjson.com/products?limit=300');
         const data = await response.json();
         products = data.products;
         displayProducts();
@@ -16,6 +16,22 @@ async function fetchProducts() {
         document.getElementById('products-grid').innerHTML = '<p>Error loading products. Please try again later.</p>';
     }
 }
+
+// Fetch categories and populate dropdown
+fetch('https://dummyjson.com/products/category-list')
+    .then(res => res.json())
+    .then(categories => {
+        const categoryFilter = document.getElementById('category-filter');
+        // Clear existing options
+        categoryFilter.innerHTML = '<option value="all">All</option>'; // Menambahkan opsi "All" kembali
+
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+            categoryFilter.appendChild(option);
+        });
+    });
 
 // Display products
 function displayProducts() {
@@ -27,6 +43,10 @@ function displayProducts() {
 
     // Filter products by category
     const filteredProducts = categoryFilter === 'all' ? products : products.filter(product => product.category === categoryFilter);
+    
+    console.log('Selected Category:', categoryFilter);
+    console.log('Filtered Products:', filteredProducts);
+
     const productsToDisplay = filteredProducts.slice(start, end);
 
     productsToDisplay.forEach(product => {
@@ -161,4 +181,26 @@ document.getElementById('search-button').addEventListener('click', () => {
 });
 
 // Initialize
-fetchProducts();
+async function init() {
+    await fetchProducts(); // Fetch products first
+    fetchCategories(); // Then fetch categories
+}
+
+function fetchCategories() {
+    fetch('https://dummyjson.com/products/category-list')
+        .then(res => res.json())
+        .then(categories => {
+            const categoryFilter = document.getElementById('category-filter');
+            categoryFilter.innerHTML = '<option value="all">All</option>'; // Reset options
+
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                categoryFilter.appendChild(option);
+            });
+        });
+}
+
+// Call init on page load
+init();
