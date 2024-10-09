@@ -1,137 +1,146 @@
-const products = [
-    { id: 1, name: "Bruno Mars Shirt", image: "./baju.png?height=200&width=200", price: 29.99 },
-    { id: 2, name: "Chris Brown Shirt", image: "./baju1.png?height=200&width=200", price: 29.99 },
-    { id: 3, name: "Dua Lipa Shirt", image: "./baju2.png?height=200&width=200", price: 29.99 },
-    { id: 4, name: "Bella Hadid Shirt", image: "./baju3.png?height=200&width=200", price: 29.99 },
-    { id: 5, name: "Taylor Swift Shirt", image: "./baju4.png?height=200&width=200", price: 29.99 },
-    { id: 6, name: "Nicki Minaj Shirt", image: "./baju5.png?height=200&width=200", price: 29.99 },
-];
+let products = [];
+let cart = [];
+let currentPage = 1;
+const itemsPerPage = 20;
 
-const cart = [];
-const productGrid = document.getElementById('product-grid');
-const cartButton = document.getElementById('cart-button');
-const cartModal = document.getElementById('cart-modal');
-const cartItems = document.getElementById('cart-items');
-const cartTotal = document.getElementById('cart-total');
-const cartCount = document.getElementById('cart-count');
-const closeCart = document.getElementById('close-cart');
-const searchInput = document.getElementById('search');
-const checkoutButton = document.getElementById('checkout-button');
-
-function renderProducts(productsToRender) {
-    productGrid.innerHTML = '';
-    productsToRender.forEach(product => {
-        const productElement = document.createElement('div');
-        productElement.className = 'border rounded-lg p-4 bg-white';
-        productElement.innerHTML = `
-            <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover mb-4">
-            <h3 class="text-lg font-semibold">${product.name}</h3>
-            <p class="text-gray-600">$${product.price.toFixed(2)}</p>
-            <button class="add-to-cart mt-2 w-full bg-gray-400 text-white px-4 py-2 rounded" data-id="${product.id}">
-                Add to Cart
-            </button>
-        `;
-        productGrid.appendChild(productElement);
-    });
+// Fetch products from API
+async function fetchProducts() {
+    try {
+        const response = await fetch('https://dummyjson.com/products?limit=100');
+        const data = await response.json();
+        products = data.products;
+        displayProducts();
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        document.getElementById('products-grid').innerHTML = '<p>Error loading products. Please try again later.</p>';
+    }
 }
 
+// Display products
+function displayProducts() {
+    const productsGrid = document.getElementById('products-grid');
+    productsGrid.innerHTML = '';
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const productsToDisplay = products.slice(start, end);
+
+    productsToDisplay.forEach(product => {
+        const priceInRupiah = Math.floor(Math.random() * (100000 - 20000 + 1)) + 20000; // Rentang 20.000 - 100.000
+        const productElement = document.createElement('div');
+        productElement.className = 'product-card';
+        productElement.innerHTML = `
+            <img src="${product.thumbnail}" alt="${product.title}">
+            <h3>${product.title}</h3>
+            <p>Rp ${priceInRupiah.toLocaleString()}</p> <!-- Mengubah format harga -->
+            <button onclick="addToCart(${product.id})">Add to Cart</button>
+        `;
+        productsGrid.appendChild(productElement);
+    });
+    updatePagination();
+}
+
+// Update pagination
+function updatePagination() {
+    const totalPages = Math.ceil(products.length / itemsPerPage);
+    document.getElementById('current-page').textContent = `Page ${currentPage} of ${totalPages}`;
+    document.getElementById('prev-page').disabled = currentPage === 1;
+    document.getElementById('next-page').disabled = currentPage === totalPages;
+}
+
+// Add item to cart
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
-    if (product) {
-        const cartItem = cart.find(item => item.id === productId);
-        if (cartItem) {
-            cartItem.quantity += 1;
-        } else {
-            cart.push({ ...product, quantity: 1 });
-        }
-        updateCartCount();
-        renderCart();
+    const existingItem = cart.find(item => item.id === productId);
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        cart.push({ ...product, quantity: 1 });
     }
+    updateCart();
 }
 
-function removeFromCart(productId) {
-    const cartItem = cart.find(item => item.id === productId);
-    if (cartItem) {
-        cartItem.quantity -= 1;
-        if (cartItem.quantity <= 0) {
-            const index = cart.indexOf(cartItem);
-            cart.splice(index, 1);
-        }
-        updateCartCount();
-        renderCart();
-    }
-}
-
-function updateCartCount() {
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartCount.textContent = totalItems;
-}
-
-function animateCartButton() {
-    cartButton.classList.add('add-to-cart-animation');
-    setTimeout(() => {
-        cartButton.classList.remove('add-to-cart-animation');
-    }, 300);
-}
-
-function renderCart() {
+// Update cart display
+function updateCart() {
+    const cartItems = document.getElementById('cart-items');
+    const cartCount = document.getElementById('cart-count');
     cartItems.innerHTML = '';
-    let total = 0;
+    cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+
     cart.forEach(item => {
         const cartItem = document.createElement('div');
-        cartItem.className = 'flex justify-between items-center cart-item-enter';
+        cartItem.className = 'cart-item';
         cartItem.innerHTML = `
-            <span>${item.name} (x${item.quantity})</span>
-            <span>$${(item.price * item.quantity).toFixed(2)}</span>
-            <div>
-                <button onclick="removeFromCart(${item.id})">-</button>
-                <button onclick="addToCart(${item.id})">+</button>
-            </div>
+            <span>${item.title} (${item.quantity})</span>
+            <span>Rp ${(item.price * item.quantity).toLocaleString()}</span>
+            <button onclick="removeFromCart(${item.id})">Remove</button>
+            <button onclick="updateQuantity(${item.id}, 1)">+</button>
+            <button onclick="updateQuantity(${item.id}, -1)">-</button>
         `;
         cartItems.appendChild(cartItem);
-        setTimeout(() => cartItem.classList.add('cart-item-enter-active'), 10);
-        total += item.price * item.quantity;
     });
-    cartTotal.textContent = total.toFixed(2);
 }
 
-productGrid.addEventListener('click', (e) => {
-    if (e.target.classList.contains('add-to-cart')) {
-        const productId = parseInt(e.target.getAttribute('data-id'));
-        addToCart(productId);
+// Update quantity of items in cart
+function updateQuantity(productId, change) {
+    const existingItem = cart.find(item => item.id === productId);
+    if (existingItem) {
+        existingItem.quantity += change;
+        if (existingItem.quantity <= 0) {
+            removeFromCart(productId);
+        } else {
+            updateCart();
+        }
+    }
+}
+
+// Remove item from cart
+function removeFromCart(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    updateCart();
+}
+
+// Event Listeners
+document.getElementById('prev-page').addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--;
+        displayProducts();
     }
 });
 
-cartButton.addEventListener('click', () => {
-    renderCart();
-    cartModal.classList.remove('hidden');
+document.getElementById('next-page').addEventListener('click', () => {
+    const totalPages = Math.ceil(products.length / itemsPerPage);
+    if (currentPage < totalPages) {
+        currentPage++;
+        displayProducts();
+    }
 });
 
-closeCart.addEventListener('click', () => {
-    cartModal.classList.add('hidden');
+document.getElementById('cart-button').addEventListener('click', () => {
+    document.getElementById('cart-overlay').classList.remove('hidden');
 });
 
-searchInput.addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    const filteredProducts = products.filter(product => 
-        product.name.toLowerCase().includes(searchTerm)
-    );
-    renderProducts(filteredProducts);
+document.getElementById('close-cart').addEventListener('click', () => {
+    document.getElementById('cart-overlay').classList.add('hidden');
 });
 
-// Initial render
-renderProducts(products);
-
-function checkout() {
+document.getElementById('checkout-button').addEventListener('click', () => {
     if (cart.length === 0) {
-        alert('Keranjang Anda kosong!');
-        return;
+        alert('Your cart is empty!');
+    } else {
+        alert('Checkout functionality is not fully implemented in this demo.');
+        // Here you can add further checkout logic, such as sending data to a server
     }
-    alert('Checkout berhasil! Terima kasih telah berbelanja.');
-    cart.length = 0; // Kosongkan keranjang
-    updateCartCount();
-    renderCart();
-}
+});
 
-checkoutButton.addEventListener('click', checkout);
+document.getElementById('search-button').addEventListener('click', () => {
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    products = products.filter(product => 
+        product.title.toLowerCase().includes(searchTerm) || 
+        product.description.toLowerCase().includes(searchTerm)
+    );
+    currentPage = 1;
+    displayProducts();
+});
 
+// Initialize
+fetchProducts();

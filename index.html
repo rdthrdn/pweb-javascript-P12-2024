@@ -1,68 +1,57 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Megapunk Store</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Tokomedia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
-    <div class="container mx-auto px-4">
-        <header class="flex justify-between items-center py-4">
-            <h1 class="text-2xl font-bold">Megapunk</h1>
-            <div class="flex items-center space-x-4">
-                <div class="relative">
-                    <input type="text" id="search" placeholder="Search..." class="pl-8 pr-2 py-1 border rounded">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+<body>
+    <header id="main-header">
+        <div class="container">
+            <h1>Tokomedia</h1>
+            <div class="header-right">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search...">
+                    <button id="search-button">🔍</button>
                 </div>
-                <button id="cart-button" class="bg-white border rounded px-3 py-1 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                    <span id="cart-count">0</span>
-                </button>
+                <button id="cart-button">🛒 <span id="cart-count">0</span></button>
             </div>
-        </header>
+        </div>
+    </header>
 
-        <main>
-            <section>
-                <h2 class="text-3xl font-bold my-8 text-center">Our Collection</h2>
-                <h2 class="text-3xl font-bold my-4 text-center">Catalog</h2>
-                <div id="product-grid" class="grid grid-cols-3 gap-6">
-                    <!-- Products will be dynamically inserted here -->
-                </div>
-            </section>
+    <main>
+        <section id="welcome-section" class="container">
+            <h2>Welcome to Tokomedia</h2>
+            <p>Welcome to our store, where we offer a fresh take on daily essentials with unbeatable prices and edgy styles! Whether you're stocking up on everyday necessities or looking for something that stands out, we've got you covered. Our products are not only affordable but also designed to match your unique sense of style, making sure you never have to compromise between function and fashion. Come shop with us and discover the perfect blend of practicality and trendsetting flair!</p>
+        </section>
 
-            <section class="my-12 text-center">
-                <h2 class="text-3xl font-bold mb-4">What exactly is Megapunk?</h2>
-                <p class="text-gray-600">
-                    Welcome to our store, where we redefine streetwear with our Megapunk Bootleg T-shirts. Proudly 100% made in Jakarta, each hand-printed design captures the spirit of urban culture. Our collection takes bootleg culture to the next level, offering a bold statement for those who dare to stand out. Megapunk is more than just clothing – it's a celebration of a way of life that pushes the boundaries of fashion and attitude.
-                </p>
-            </section>
+        <section id="products-section" class="container">
+            <h2>Our Collection</h2>
+            <div class="separator"></div> <!-- Menambahkan pemisah -->
+            <div id="products-grid"></div>
+        </section>
 
-            <section class="my-12 text-center">
-                <h2 class="text-3xl font-bold mb-4">Be Our Member</h2>
-                <button class="bg-blue-500 text-white px-4 py-2 rounded">Subscribe</button>
-            </section>
-        </main>
+        <div id="pagination">
+            <button id="prev-page">Previous</button>
+            <span id="current-page">Page 1</span>
+            <button id="next-page">Next</button>
+        </div>
+    </main>
 
-        <footer class="text-center py-4 text-gray-600">
-            Megapunk 2024
-        </footer>
-    </div>
+    <footer>
+        <div class="container">
+            <p>Tokomedia 2024</p>
+        </div>
+    </footer>
 
-    <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white p-6 rounded-lg max-w-md w-full">
-            <h2 class="text-2xl font-bold mb-4">Your Cart</h2>
-            <div id="cart-items" class="space-y-4">
-                <!-- Cart items will be dynamically inserted here -->
-            </div>
-            <div class="mt-6 flex justify-between items-center">
-                <p class="font-bold">Total: $<span id="cart-total">0.00</span></p>
-                <button id="close-cart" class="bg-gray-200 px-4 py-2 rounded">Close</button>
-            </div>
-            <button id="checkout-button" class="bg-green-500 text-white px-4 py-2 rounded mt-4">Checkout</button>
+    <div id="cart-overlay" class="hidden">
+        <div id="cart-content">
+            <h2>Your Cart</h2>
+            <button id="close-cart">✕</button>
+            <div id="cart-items"></div>
+            <button id="checkout-button">Checkout</button>
         </div>
     </div>
 
