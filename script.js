@@ -1,7 +1,8 @@
 let products = [];
 let cart = [];
 let currentPage = 1;
-const itemsPerPage = 20;
+let itemsPerPage = 20; // Default items per page
+const categories = ['all', 'electronics', 'clothing', 'accessories'];
 
 // Fetch products from API
 async function fetchProducts() {
@@ -22,7 +23,11 @@ function displayProducts() {
     productsGrid.innerHTML = '';
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
-    const productsToDisplay = products.slice(start, end);
+    const categoryFilter = document.getElementById('category-filter').value;
+
+    // Filter products by category
+    const filteredProducts = categoryFilter === 'all' ? products : products.filter(product => product.category === categoryFilter);
+    const productsToDisplay = filteredProducts.slice(start, end);
 
     productsToDisplay.forEach(product => {
         const priceInRupiah = Math.floor(Math.random() * (100000 - 20000 + 1)) + 20000; // Rentang 20.000 - 100.000
@@ -36,12 +41,12 @@ function displayProducts() {
         `;
         productsGrid.appendChild(productElement);
     });
-    updatePagination();
+    updatePagination(filteredProducts.length);
 }
 
 // Update pagination
-function updatePagination() {
-    const totalPages = Math.ceil(products.length / itemsPerPage);
+function updatePagination(totalProducts) {
+    const totalPages = Math.ceil(totalProducts / itemsPerPage);
     document.getElementById('current-page').textContent = `Page ${currentPage} of ${totalPages}`;
     document.getElementById('prev-page').disabled = currentPage === 1;
     document.getElementById('next-page').disabled = currentPage === totalPages;
@@ -113,6 +118,19 @@ document.getElementById('next-page').addEventListener('click', () => {
         currentPage++;
         displayProducts();
     }
+});
+
+// Filter by category
+document.getElementById('category-filter').addEventListener('change', () => {
+    currentPage = 1; // Reset to first page when category changes
+    displayProducts();
+});
+
+// Change number of items per page
+document.getElementById('items-per-page').addEventListener('change', (event) => {
+    itemsPerPage = parseInt(event.target.value, 10);
+    currentPage = 1; // Reset to first page when items per page changes
+    displayProducts();
 });
 
 document.getElementById('cart-button').addEventListener('click', () => {
