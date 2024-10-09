@@ -50,22 +50,34 @@ body {
     border-radius: 4px 0 0 4px;
 }
 
+#search-button, #cart-button, .product-card button, #pagination button, #checkout-button {
+    border-radius: 20px; /* Menambahkan sudut melengkung pada tombol */
+    padding: 0.5rem 1rem; /* Menjaga padding agar tetap nyaman */
+}
+
 #search-button {
-    padding: 0.5rem;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    border-radius: 0 4px 4px 0;
-    cursor: pointer;
+    background-color: #333; /* Warna latar belakang tombol pencarian */
+    color: #fff; /* Warna teks tombol pencarian */
 }
 
 #cart-button {
-    background-color: #333;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
+    background-color: #333; /* Warna latar belakang tombol keranjang */
+    color: #fff; /* Warna teks tombol keranjang */
+}
+
+.product-card button {
+    background-color: #333; /* Warna latar belakang tombol di kartu produk */
+    color: #fff; /* Warna teks tombol di kartu produk */
+}
+
+#pagination button {
+    background-color: #333; /* Warna latar belakang tombol pagination */
+    color: #fff; /* Warna teks tombol pagination */
+}
+
+#checkout-button {
+    background-color: #333; /* Warna latar belakang tombol checkout */
+    color: #fff; /* Warna teks tombol checkout */
 }
 
 main {
@@ -207,4 +219,27 @@ footer {
     height: 2px; /* Tinggi pemisah */
     background-color: #ddd; /* Warna pemisah */
     margin: 2rem 0; /* Jarak atas dan bawah pemisah */
+}
+
+#welcome-section h2 {
+    margin-bottom: 1rem; /* Menambahkan jarak bawah pada judul */
+}
+
+/* Animasi untuk tombol */
+button {
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transisi untuk warna latar belakang dan transformasi */
+}
+
+button:hover {
+    background-color: #555; /* Mengubah warna latar belakang saat hover */
+    transform: scale(1.05); /* Membesarkan tombol sedikit saat hover */
+}
+
+/* Animasi untuk kartu produk */
+.product-card {
+    transition: transform 0.2s ease; /* Transisi untuk transformasi */
+}
+
+.product-card:hover {
+    transform: scale(1.05); /* Membesarkan kartu produk sedikit saat hover */
 }
