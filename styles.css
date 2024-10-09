@@ -96,8 +96,8 @@ main {
 }
 
 .product-card {
-    width: 200px; /* Menetapkan lebar tetap untuk setiap kartu produk */
-    height: 300px; /* Menetapkan tinggi tetap untuk setiap kartu produk */
+    width: 220px; /* Menetapkan lebar tetap untuk setiap kartu produk */
+    height: 350px; /* Menetapkan tinggi tetap untuk setiap kartu produk */
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Menjaga jarak antara elemen dalam kartu */
@@ -105,6 +105,7 @@ main {
     border-radius: 4px;
     padding: 1rem;
     text-align: center;
+    background-color: #fff; /* Menambahkan warna latar belakang untuk kartu produk */
 }
 
 .product-card img {
@@ -207,6 +208,9 @@ footer {
 
 .product-card h3 {
     font-size: 1rem; /* Mengecilkan ukuran nama produk */
+    overflow: hidden; /* Menyembunyikan teks yang terlalu panjang */
+    text-overflow: ellipsis; /* Menambahkan elipsis untuk teks yang terlalu panjang */
+    white-space: nowrap; /* Mencegah teks membungkus ke baris berikutnya */
 }
 
 /* Menambahkan jarak antara welcome-section dan products-section */
