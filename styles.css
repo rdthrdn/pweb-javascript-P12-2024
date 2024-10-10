@@ -410,3 +410,62 @@ footer .social-media a {
     color: #FFD700; /* Warna bintang (emas) */
     margin: 0.5rem 0; /* Jarak atas dan bawah */
 }
+
+/* Tambahkan ini di bagian bawah file styles.css */
+
+/* Media Query untuk layar kecil (mobile) */
+@media (max-width: 600px) {
+    .container {
+        width: 95%; /* Lebar kontainer lebih besar di layar kecil */
+    }
+
+    #products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Mengurangi ukuran minimum kolom */
+    }
+
+    .product-card {
+        width: 100%; /* Kartu produk mengambil lebar penuh */
+        height: auto; /* Tinggi otomatis untuk kartu produk */
+    }
+
+    #search-input {
+        width: 100%; /* Input pencarian mengambil lebar penuh */
+        margin-bottom: 1rem; /* Jarak bawah untuk input pencarian */
+    }
+
+    .header-right {
+        flex-direction: column; /* Mengubah arah flex menjadi kolom */
+        align-items: flex-start; /* Menyelaraskan elemen ke kiri */
+    }
+
+    #cart-button {
+        margin-top: 1rem; /* Jarak atas untuk tombol keranjang */
+    }
+}
+
+/* Media Query untuk layar sedang (tablet) */
+@media (min-width: 601px) and (max-width: 900px) {
+    #products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Ukuran kolom yang lebih besar */
+    }
+
+    .product-card {
+        width: 100%; /* Kartu produk mengambil lebar penuh */
+        height: auto; /* Tinggi otomatis untuk kartu produk */
+    }
+
+    #search-input {
+        width: 70%; /* Input pencarian mengambil 70% lebar */
+    }
+}
+
+/* Media Query untuk layar besar (desktop) */
+@media (min-width: 901px) {
+    #products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Ukuran kolom yang lebih besar */
+    }
+
+    #search-input {
+        width: 300px; /* Lebar tetap untuk input pencarian */
+    }
+}
