@@ -275,13 +275,12 @@ async function showProductDetails(productId) {
         const response = await fetch(`https://dummyjson.com/products/${productId}`);
         const product = await response.json();
 
-        // Mengisi konten modal dengan detail produk
+
         document.getElementById('modal-title').textContent = product.title;
         document.getElementById('modal-description').textContent = product.description;
         document.getElementById('modal-price').textContent = `Price: $${product.price.toLocaleString()}`;
         document.getElementById('modal-category').textContent = `Category: ${product.category}`;
 
-        // Menampilkan modal
         document.getElementById('product-modal').style.display = 'block';
     } catch (error) {
         console.error('Error fetching product details:', error);
@@ -291,4 +290,31 @@ async function showProductDetails(productId) {
 
 document.getElementById('close-modal').addEventListener('click', () => {
     document.getElementById('product-modal').style.display = 'none';
+});
+
+function autocomplete(input) {
+    const autocompleteList = document.getElementById('autocomplete-list');
+    autocompleteList.innerHTML = ''; 
+
+    const searchTerm = input.value.toLowerCase();
+    if (!searchTerm) return; 
+
+    const filteredProducts = products.filter(product => 
+        product.title.toLowerCase().startsWith(searchTerm) 
+    );
+
+    filteredProducts.forEach(product => {
+        const suggestion = document.createElement('div');
+        suggestion.textContent = product.title;
+        suggestion.addEventListener('click', () => {
+            input.value = product.title; 
+            autocompleteList.innerHTML = ''; 
+            performSearch(); 
+        });
+        autocompleteList.appendChild(suggestion);
+    });
+}
+
+document.getElementById('search-input').addEventListener('input', function() {
+    autocomplete(this);
 });
