@@ -97,7 +97,7 @@ main {
 
 .product-card {
     width: 220px; /* Menetapkan lebar tetap untuk setiap kartu produk */
-    height: 380px; /* Menetapkan tinggi tetap untuk setiap kartu produk */
+    height: 410px; /* Menetapkan tinggi tetap untuk setiap kartu produk */
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Menjaga jarak antara elemen dalam kartu */
@@ -403,4 +403,10 @@ footer {
 
 footer .social-media a {
     font-size: 0.8rem; /* Mengubah ukuran font menjadi lebih kecil */
+}
+
+.product-rating {
+    font-size: 1rem; /* Ukuran font untuk rating */
+    color: #FFD700; /* Warna bintang (emas) */
+    margin: 0.5rem 0; /* Jarak atas dan bawah */
 }

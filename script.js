@@ -19,6 +19,23 @@ async function fetchProducts() {
         // Filter products by category
         const filteredProducts = categoryFilter === 'all' ? products : products.filter(product => product.category === categoryFilter);
 
+        // Sort products based on selected criteria
+        if (sortBy === 'rating') {
+            if (order === 'asc') {
+                filteredProducts.sort((a, b) => a.rating - b.rating); // Urutkan berdasarkan rating ascending
+            } else {
+                filteredProducts.sort((a, b) => b.rating - a.rating); // Urutkan berdasarkan rating descending
+            }
+        } else {
+            filteredProducts.sort((a, b) => {
+                if (sortBy === 'title') {
+                    return order === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title);
+                } else if (sortBy === 'price') {
+                    return order === 'asc' ? a.price - b.price : b.price - a.price;
+                }
+            });
+        }
+
         // Update display with filtered products
         displayProducts(filteredProducts);
     } catch (error) {
@@ -63,7 +80,8 @@ function displayProducts(filteredProducts) {
         productElement.className = 'product-card';
         productElement.innerHTML = `
             <img src="${product.thumbnail}" alt="${product.title}">
-            <h3>${product.title}</h3>
+            <h3>${product.title}</h3> <!-- Nama produk -->
+            <p class="product-rating">${'★'.repeat(Math.round(product.rating))}${'☆'.repeat(5 - Math.round(product.rating))}</p> <!-- Rating di bawah nama -->
             <p>$ ${product.price.toLocaleString()}</p>
             <button onclick="addToCart(${product.id})">Add to Cart</button>
             <button onclick="showProductDetails(${product.id})">Details</button> <!-- Tombol Details -->
@@ -211,6 +229,16 @@ document.getElementById('search-button').addEventListener('click', () => {
     );
     currentPage = 1; // Reset ke halaman pertama
     displayProducts(filteredProducts); // Tampilkan produk yang difilter
+    const categoryFilter = document.getElementById('category-filter').value;
+
+    // Filter products based on category first
+    const filteredByCategory = categoryFilter === 'all' ? products : products.filter(product => product.category === categoryFilter);
+
+    // Then filter by search term
+    const searchedProducts = filteredByCategory.filter(product => product.title.toLowerCase().includes(searchTerm));
+
+    // Update display with searched products
+    displayProducts(searchedProducts);
 });
 
 // Initialize
