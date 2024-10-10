@@ -221,7 +221,17 @@ document.getElementById('checkout-button').addEventListener('click', () => {
 });
 
 // Event listener untuk tombol pencarian
-document.getElementById('search-button').addEventListener('click', () => {
+document.getElementById('search-button').addEventListener('click', performSearch);
+
+// Event Listener for Enter Key
+document.getElementById('search-input').addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        performSearch();
+    }
+});
+
+// Function to Perform Search
+function performSearch() {
     const searchTerm = document.getElementById('search-input').value.toLowerCase();
     const filteredProducts = products.filter(product => 
         product.title.toLowerCase().startsWith(searchTerm) || // Menggunakan startsWith untuk mencocokkan huruf awal
@@ -234,12 +244,12 @@ document.getElementById('search-button').addEventListener('click', () => {
     // Filter products based on category first
     const filteredByCategory = categoryFilter === 'all' ? products : products.filter(product => product.category === categoryFilter);
 
-    // Then filter by search term
-    const searchedProducts = filteredByCategory.filter(product => product.title.toLowerCase().includes(searchTerm));
+    // Then filter by search term using startsWith
+    const searchedProducts = filteredByCategory.filter(product => product.title.toLowerCase().startsWith(searchTerm));
 
     // Update display with searched products
     displayProducts(searchedProducts);
-});
+}
 
 // Initialize
 async function init() {
