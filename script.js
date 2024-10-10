@@ -240,3 +240,9 @@ document.addEventListener('DOMContentLoaded', () => {
         element.classList.add('visible');
     });
 });
+
+document.getElementById('items-per-page').addEventListener('change', (event) => {
+    itemsPerPage = parseInt(event.target.value, 10);
+    currentPage = 1; // Reset to first page when items per page changes
+    fetchProducts(); // Fetch products again to apply the new items per page setting
+});
