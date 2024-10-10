@@ -202,14 +202,15 @@ document.getElementById('checkout-button').addEventListener('click', () => {
     }
 });
 
+// Event listener untuk tombol pencarian
 document.getElementById('search-button').addEventListener('click', () => {
     const searchTerm = document.getElementById('search-input').value.toLowerCase();
-    products = products.filter(product => 
-        product.title.toLowerCase().includes(searchTerm) || 
-        product.description.toLowerCase().includes(searchTerm)
+    const filteredProducts = products.filter(product => 
+        product.title.toLowerCase().startsWith(searchTerm) || // Menggunakan startsWith untuk mencocokkan huruf awal
+        product.description.toLowerCase().startsWith(searchTerm) // Jika ingin juga mencocokkan deskripsi
     );
-    currentPage = 1;
-    displayProducts();
+    currentPage = 1; // Reset ke halaman pertama
+    displayProducts(filteredProducts); // Tampilkan produk yang difilter
 });
 
 // Initialize

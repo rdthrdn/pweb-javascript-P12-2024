@@ -400,3 +400,7 @@ footer {
     border-color: #007BFF; /* Warna border saat fokus */
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Bayangan saat fokus */
 }
+
+footer .social-media a {
+    font-size: 0.8rem; /* Mengubah ukuran font menjadi lebih kecil */
+}
