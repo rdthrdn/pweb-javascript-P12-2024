@@ -66,6 +66,7 @@ function displayProducts(filteredProducts) {
             <h3>${product.title}</h3>
             <p>$ ${product.price.toLocaleString()}</p>
             <button onclick="addToCart(${product.id})">Add to Cart</button>
+            <button onclick="showProductDetails(${product.id})">Details</button> <!-- Tombol Details -->
         `;
         productsGrid.appendChild(productElement);
     });
@@ -108,18 +109,28 @@ function updateCart() {
     cartItems.innerHTML = '';
     cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
 
+    let totalPrice = 0; // Inisialisasi total harga
     cart.forEach(item => {
         const cartItem = document.createElement('div');
         cartItem.className = 'cart-item';
         cartItem.innerHTML = `
             <span>${item.title} (${item.quantity})</span>
-            <span>$ ${(item.price * item.quantity).toLocaleString()}</span> <!-- Menggunakan harga dari produk -->
+            <span>$ ${(item.price * item.quantity).toLocaleString()}</span>
             <button onclick="removeFromCart(${item.id})">Remove</button>
-            <button onclick="updateQuantity(${item.id}, -1)">-</button> <!-- Tombol - di sini -->
-            <button onclick="updateQuantity(${item.id}, 1)">+</button> <!-- Tombol + di sini -->
+            <button onclick="updateQuantity(${item.id}, -1)">-</button>
+            <button onclick="updateQuantity(${item.id}, 1)">+</button>
         `;
         cartItems.appendChild(cartItem);
+        totalPrice += item.price * item.quantity; // Hitung total harga
     });
+
+    // Tampilkan total produk dan total harga
+    const totalDisplay = document.createElement('div');
+    totalDisplay.innerHTML = `
+        <strong>Total Products: ${cartCount.textContent}</strong><br>
+        <strong>Total Price: $${totalPrice.toLocaleString()}</strong>
+    `;
+    cartItems.appendChild(totalDisplay);
 }
 
 // Update quantity of items in cart
@@ -184,6 +195,10 @@ document.getElementById('checkout-button').addEventListener('click', () => {
     } else {
         alert('Checkout functionality is not fully implemented in this demo.');
         // Here you can add further checkout logic, such as sending data to a server
+        const totalProducts = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        alert(`Total Products: ${totalProducts}\nTotal Price: $${totalPrice.toLocaleString()}`);
+        // Di sini Anda bisa menambahkan logika checkout lebih lanjut, seperti mengirim data ke server
     }
 });
 
@@ -246,3 +261,39 @@ document.getElementById('items-per-page').addEventListener('change', (event) => 
     currentPage = 1; // Reset to first page when items per page changes
     fetchProducts(); // Fetch products again to apply the new items per page setting
 });
+
+// ... existing code ...
+
+async function showProductDetails(productId) {
+    try {
+        const response = await fetch(`https://dummyjson.com/products/${productId}`);
+        const product = await response.json();
+
+        // Tampilkan detail produk
+        alert(`
+            Title: ${product.title}
+            Description: ${product.description}
+            Price: $${product.price.toLocaleString()}
+            Category: ${product.category}
+        `);
+
+        // Update modal content
+        document.getElementById('modal-title').textContent = product.title;
+        document.getElementById('modal-description').textContent = product.description;
+        document.getElementById('modal-price').textContent = `Price: $${product.price.toLocaleString()}`;
+        document.getElementById('modal-category').textContent = `Category: ${product.category}`;
+
+        // Show modal
+        document.getElementById('product-modal').classList.remove('hidden');
+    } catch (error) {
+        console.error('Error fetching product details:', error);
+        alert('Error loading product details. Please try again later.');
+    }
+}
+
+// Close modal
+document.getElementById('close-modal').addEventListener('click', () => {
+    document.getElementById('product-modal').classList.add('hidden');
+});
+
+// ... existing code ...
