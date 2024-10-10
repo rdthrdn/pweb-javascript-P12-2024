@@ -50,17 +50,21 @@ function displayProducts(filteredProducts) {
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
 
+    // Pastikan filteredProducts tidak kosong
+    if (filteredProducts.length === 0) {
+        productsGrid.innerHTML = '<p>No products found.</p>'; // Menampilkan pesan jika tidak ada produk
+        return;
+    }
+
     const productsToDisplay = filteredProducts.slice(start, end);
 
     productsToDisplay.forEach(product => {
-        // Gunakan harga dari produk yang diambil dari API
-        const priceInDollar = product.price; // Asumsikan API mengembalikan harga dalam dolar
         const productElement = document.createElement('div');
         productElement.className = 'product-card';
         productElement.innerHTML = `
             <img src="${product.thumbnail}" alt="${product.title}">
             <h3>${product.title}</h3>
-            <p>$ ${priceInDollar.toLocaleString()}</p> <!-- Menggunakan harga dari produk -->
+            <p>$ ${product.price.toLocaleString()}</p>
             <button onclick="addToCart(${product.id})">Add to Cart</button>
         `;
         productsGrid.appendChild(productElement);
@@ -80,6 +84,15 @@ function updatePagination(totalProducts) {
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
     const existingItem = cart.find(item => item.id === productId);
+    
+    // Menambahkan animasi ke elemen tombol
+    const button = event.target; // Mendapatkan elemen tombol yang ditekan
+    button.classList.add('add-to-cart-animation'); // Menambahkan kelas animasi
+
+    setTimeout(() => {
+        button.classList.remove('add-to-cart-animation'); // Menghapus kelas setelah animasi selesai
+    }, 500); // Durasi animasi sama dengan durasi CSS
+
     if (existingItem) {
         existingItem.quantity++;
     } else {
@@ -102,8 +115,8 @@ function updateCart() {
             <span>${item.title} (${item.quantity})</span>
             <span>$ ${(item.price * item.quantity).toLocaleString()}</span> <!-- Menggunakan harga dari produk -->
             <button onclick="removeFromCart(${item.id})">Remove</button>
-            <button onclick="updateQuantity(${item.id}, 1)">+</button>
-            <button onclick="updateQuantity(${item.id}, -1)">-</button>
+            <button onclick="updateQuantity(${item.id}, -1)">-</button> <!-- Tombol - di sini -->
+            <button onclick="updateQuantity(${item.id}, 1)">+</button> <!-- Tombol + di sini -->
         `;
         cartItems.appendChild(cartItem);
     });
@@ -132,7 +145,7 @@ function removeFromCart(productId) {
 document.getElementById('prev-page').addEventListener('click', () => {
     if (currentPage > 1) {
         currentPage--;
-        displayProducts();
+        displayProducts(products); // Pastikan untuk mengirimkan produk yang benar
     }
 });
 
@@ -140,7 +153,7 @@ document.getElementById('next-page').addEventListener('click', () => {
     const totalPages = Math.ceil(products.length / itemsPerPage);
     if (currentPage < totalPages) {
         currentPage++;
-        displayProducts();
+        displayProducts(products); // Pastikan untuk mengirimkan produk yang benar
     }
 });
 

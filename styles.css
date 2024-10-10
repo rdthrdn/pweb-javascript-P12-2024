@@ -270,3 +270,23 @@ button:hover {
     margin: 0 20px; /* Menambahkan jarak di kanan dan kiri */
     padding: 0 10px; /* Menambahkan padding untuk ruang tambahan */
 }
+
+/* Animasi untuk efek Add to Cart */
+@keyframes addToCart {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+.add-to-cart-animation {
+    animation: addToCart 0.5s forwards; /* Menggunakan animasi yang telah didefinisikan */
+}
