@@ -378,3 +378,25 @@ footer {
 .social-media a:hover {
     text-decoration: underline; /* Garis bawah saat hover */
 }
+
+.filter-box {
+    padding: 0.5rem;
+    border: 2px solid #333; /* Warna border */
+    border-radius: 8px; /* Sudut melengkung */
+    background-color: #fff; /* Warna latar belakang */
+    color: #333; /* Warna teks */
+    transition: all 0.3s ease; /* Transisi untuk efek hover */
+    margin-right: 10px; /* Jarak antar elemen */
+}
+
+.filter-box:hover {
+    border-color: #555; /* Warna border saat hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Bayangan saat hover */
+    transform: scale(1.05); /* Membesarkan sedikit saat hover */
+}
+
+.filter-box:focus {
+    outline: none; /* Menghapus outline default */
+    border-color: #007BFF; /* Warna border saat fokus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Bayangan saat fokus */
+}
