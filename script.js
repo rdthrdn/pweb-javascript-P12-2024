@@ -275,19 +275,14 @@ async function showProductDetails(productId) {
         const response = await fetch(`https://dummyjson.com/products/${productId}`);
         const product = await response.json();
 
-        alert(`
-            Title: ${product.title}
-            Description: ${product.description}
-            Price: $${product.price.toLocaleString()}
-            Category: ${product.category}
-        `);
-
+        // Mengisi konten modal dengan detail produk
         document.getElementById('modal-title').textContent = product.title;
         document.getElementById('modal-description').textContent = product.description;
         document.getElementById('modal-price').textContent = `Price: $${product.price.toLocaleString()}`;
         document.getElementById('modal-category').textContent = `Category: ${product.category}`;
 
-        document.getElementById('product-modal').classList.remove('hidden');
+        // Menampilkan modal
+        document.getElementById('product-modal').style.display = 'block';
     } catch (error) {
         console.error('Error fetching product details:', error);
         alert('Error loading product details. Please try again later.');
@@ -295,5 +290,5 @@ async function showProductDetails(productId) {
 }
 
 document.getElementById('close-modal').addEventListener('click', () => {
-    document.getElementById('product-modal').classList.add('hidden');
+    document.getElementById('product-modal').style.display = 'none';
 });
