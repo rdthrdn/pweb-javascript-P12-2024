@@ -232,3 +232,11 @@ document.getElementById('sort-order').addEventListener('change', () => {
     currentPage = 1; // Reset to first page when sort order changes
     fetchProducts(); // Fetch products with new sort order
 });
+
+// Add animation on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const fadeInElements = document.querySelectorAll('.fade-in');
+    fadeInElements.forEach(element => {
+        element.classList.add('visible');
+    });
+});
