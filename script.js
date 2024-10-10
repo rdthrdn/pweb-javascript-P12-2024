@@ -12,7 +12,7 @@ async function fetchProducts() {
         const categoryFilter = document.getElementById('category-filter').value;
 
         // Fetch products with sorting and filtering
-        const response = await fetch(`https://dummyjson.com/products?sortBy=${sortBy}&order=${order}&limit=300`);
+        const response = await fetch(`https://dummyjson.com/products?sortBy=${sortBy}&order=${order}&limit=200`);
         const data = await response.json();
         products = data.products;
 
